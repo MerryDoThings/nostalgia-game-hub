@@ -1,0 +1,12 @@
+/dist/
+/preview/
+/test-output/
+*.user
+*.pdb
+*.apk
+*.obb
+*.vhdx
+*.lnk
+library.json*
+preview-error.txt
+__pycache__/

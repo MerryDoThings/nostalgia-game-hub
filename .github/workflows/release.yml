@@ -1,0 +1,43 @@
+name: Build Windows launcher
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build and check package
+        shell: pwsh
+        run: ./build.ps1 -Package
+      - name: Test selection and settings
+        shell: pwsh
+        run: ./scripts/Test-Library.ps1
+      - name: Upload portable launcher
+        uses: actions/upload-artifact@v4
+        with:
+          name: GameHub-Windows
+          path: |
+            dist/GameHub-Windows.zip
+            dist/SHA256SUMS.txt
+  publish:
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: build
+    runs-on: windows-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: GameHub-Windows
+          path: release
+      - name: Publish download
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          gh release create $env:GITHUB_REF_NAME release/GameHub-Windows.zip release/SHA256SUMS.txt --title "Game Hub $env:GITHUB_REF_NAME" --notes "Launcher Windows con selezione dei titoli, collegamenti locali e crediti. Il pacchetto contiene il launcher, non i giochi. Estrai lo ZIP e avvia GameHub.exe."
