@@ -16,6 +16,12 @@ jobs:
       - name: Test selection and settings
         shell: pwsh
         run: ./scripts/Test-Library.ps1
+      - name: Set up Python for save validation tests
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Test save validation
+        run: python -m unittest discover -s scripts/go-backup -p "test_*.py" -v
       - name: Upload portable launcher
         uses: actions/upload-artifact@v4
         with:

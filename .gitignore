@@ -10,3 +10,5 @@
 library.json*
 preview-error.txt
 __pycache__/
+*.dat
+/backups/

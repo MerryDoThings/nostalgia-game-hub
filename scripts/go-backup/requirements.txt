@@ -1,0 +1,3 @@
+dissect.hypervisor==3.21
+dissect.volume==3.18
+dissect.extfs==3.15

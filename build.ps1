@@ -16,7 +16,7 @@ Copy-Item -LiteralPath "$projectRoot\Assets\launcher.ico" -Destination $output
 New-Item -ItemType Directory -Path "$output\Assets" -Force | Out-Null
 Get-ChildItem -LiteralPath "$projectRoot\Assets" -File | Where-Object { $_.Extension -eq '.png' } | Copy-Item -Destination "$output\Assets"
 New-Item -ItemType Directory -Path "$output\docs" -Force | Out-Null
-Copy-Item -LiteralPath "$projectRoot\docs\home.png","$projectRoot\docs\selection.png" -Destination "$output\docs"
+Copy-Item -LiteralPath "$projectRoot\docs\home.png","$projectRoot\docs\selection.png","$projectRoot\docs\go-saves.md" -Destination "$output\docs"
 Copy-Item -LiteralPath "$projectRoot\scripts\Install-Hub.ps1" -Destination "$output\Install-Hub.ps1"
 Write-Host "Build: $exe"
 if ($Package) {
