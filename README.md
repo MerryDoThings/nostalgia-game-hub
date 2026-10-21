@@ -56,6 +56,8 @@ Clic destro sulla scheda per gestire collegamento, pagina ufficiale e crediti.
 Per Go su BlueStacks è disponibile nei sorgenti uno [strumento facoltativo per
 le copie locali dei salvataggi](docs/go-saves.md). Verifica i file prima di copiarli
 e conserva le versioni precedenti; il launcher non lo avvia automaticamente.
+La stessa guida descrive la correzione dell'attesa prolungata nell'avvio offline
+di Go 1.8.7 e il relativo script per una propria copia dell'APK.
 
 ## Compilare dai sorgenti
 

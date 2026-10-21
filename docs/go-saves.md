@@ -47,12 +47,45 @@ poi ripristinare una copia valida. Questo launcher non modifica il gioco.
 
 ## Avvio senza Internet
 
-Il blocco dopo il logo Rovio e prima dei pulsanti del menu richiede una verifica
-separata. L'analisi statica della versione 1.8.7 mostra attese per la sessione
-Skynest e per i metadati degli aggiornamenti: alcune chiamate consentono fino a
-60 secondi di attesa. Il controllo della sessione può terminare prima quando
-Android segnala la disconnessione.
+La versione 1.8.7 può restare a lungo dopo il logo Rovio e prima dei pulsanti
+del menu mentre aspetta i metadati Skynest. In una prova con la modalità aereo
+di BlueStacks il menu era visibile dopo circa 80 secondi dall'avvio del gioco.
 
-Queste attese sono una pista da verificare durante un avvio offline. Non è
-ancora confermato quale passaggio impedisca di arrivare al menu. Lo strumento
-di copia dei salvataggi non corregge questo comportamento.
+È stata verificata una modifica locale a `DownloadRemoteAssetList`: il ciclo
+di attesa dei metadati passa da 600 pause di 100 ms a 50 pause. Dopo 5 secondi
+senza risposta viene quindi usato il percorso di ripiego già presente nel gioco.
+La stessa copia aggiornata ha mostrato il menu offline entro 22 secondi dal
+comando di avvio e ha caricato il garage con i progressi esistenti. Una prova
+sulle istruzioni ARM verifica anche che risposta ed errore terminino subito
+l'attesa sia prima sia dopo la modifica.
+
+Per chi gestisce una propria copia dell'APK 1.8.7 ARMv7, il sorgente facoltativo
+è in [scripts/go-offline](https://github.com/MerryDoThings/nostalgia-game-hub/blob/main/scripts/go-offline/patch_metadata_wait.py):
+
+```powershell
+py scripts/go-offline/patch_metadata_wait.py copia.apk copia-attesa-breve-unsigned.apk
+```
+
+Lo script controlla l'impronta della funzione prima di cambiare una sola
+istruzione. Conserva gli altri file, le altre istruzioni e le eventuali
+correzioni già presenti al caricamento dei salvataggi. Produce un APK **non
+firmato** e un rapporto locale; non installa né avvia il gioco.
+
+Per aggiornare una copia installata occorre firmare l'APK con un certificato
+compatibile con quello già usato. Conserva i salvataggi e il pacchetto precedente
+prima di una prova. Non disinstallare per superare un conflitto di firma: perderesti
+i dati dell'app. Un APK fornito allo script può contenere dati personali nei suoi
+asset; conserva l'output localmente.
+
+La prova riguarda menu e garage con contenuti già presenti. I nuovi contenuti
+da scaricare richiedono la connessione. Il launcher e lo strumento di copia dei
+salvataggi non applicano automaticamente questa modifica.
+
+La prova è stata ripetuta dopo una chiusura completa di BlueStacks, verificando
+un nuovo salvataggio integro con gli stessi progressi. È stata caricata anche
+una pista di Seedway offline. Per riprodurre la prova puoi usare la
+[modalità aereo di BlueStacks](https://support.bluestacks.com/hc/it/articles/11988217610381-Come-abilitare-o-disabilitare-la-modalit%C3%A0-aereo-su-BlueStacks-5).
+
+Durante il controllo è stato osservato anche un arresto grafico del Game Center
+di BlueStacks. Se l'emulatore rimane sulla Home, apri Go dalla sua icona: nella
+prova il gioco ha mostrato il menu e ha conservato i progressi.
